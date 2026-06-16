@@ -34,6 +34,7 @@ struct SettingsView: View {
             Toggle("Play capture sound", isOn: $settings.playCaptureSound)
             Toggle("Show screenshot stack", isOn: $settings.showStackPanel)
         }
+        .font(VST.Font.body)
         .formStyle(.grouped)
         .padding()
     }
