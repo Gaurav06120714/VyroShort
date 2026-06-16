@@ -31,6 +31,7 @@ final class StackPanelController {
                 )
             }
             panel.positionBottomLeft()
+            panel.alphaValue = 0.86   // see-through, frosted look
             self.panel = panel
         }
         panel?.orderFrontRegardless()

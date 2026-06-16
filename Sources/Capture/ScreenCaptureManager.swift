@@ -24,7 +24,7 @@ final class ScreenCaptureManager {
         let display = displayUnderCursor(in: content) ?? content.displays.first
         guard let display else { throw CaptureError.noDisplay }
 
-        let filter = SCContentFilter(display: display, excludingWindows: [])
+        let filter = SCContentFilter(display: display, excludingWindows: ownWindows(in: content))
         let config = configuration(width: display.width, height: display.height)
         return try await capture(filter: filter, config: config)
     }
@@ -60,11 +60,18 @@ final class ScreenCaptureManager {
             height: rect.height
         )
 
-        let filter = SCContentFilter(display: display, excludingWindows: [])
+        let filter = SCContentFilter(display: display, excludingWindows: ownWindows(in: content))
         let config = configuration(width: Int(local.width * scale), height: Int(local.height * scale))
         config.sourceRect = local
         config.scalesToFit = false
         return try await capture(filter: filter, config: config)
+    }
+
+    /// VyroShort's own on-screen windows (stack panel, editor, overlays) so they
+    /// are never baked into a capture.
+    private func ownWindows(in content: SCShareableContent) -> [SCWindow] {
+        let bundleID = Bundle.main.bundleIdentifier
+        return content.windows.filter { $0.owningApplication?.bundleIdentifier == bundleID }
     }
 
     // MARK: - Core
