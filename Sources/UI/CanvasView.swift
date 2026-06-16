@@ -98,6 +98,14 @@ struct CanvasView: View {
     @State private var editingTextID: UUID?
     @State private var editingText: String = ""
     @FocusState private var textFocused: Bool
+    @State private var move: MoveState?
+
+    private struct MoveState {
+        let id: UUID
+        let origStart: CGPoint
+        let origEnd: CGPoint
+        let grab: CGPoint     // image-space point where the drag began
+    }
 
     var body: some View {
         GeometryReader { geo in
@@ -110,6 +118,17 @@ struct CanvasView: View {
                 // Crop dimming overlay.
                 if let crop = engine.cropRect {
                     cropOverlay(crop: crop, displaySize: displaySize, scale: scale)
+                }
+
+                // Selection highlight (Select tool).
+                if engine.tool == .select, let id = engine.selectedID,
+                   let a = engine.annotation(id) {
+                    let r = a.rect
+                    RoundedRectangle(cornerRadius: 3, style: .continuous)
+                        .strokeBorder(VST.Color.accent, style: StrokeStyle(lineWidth: 1.5, dash: [5, 3]))
+                        .frame(width: max(r.width, 12) * scale + 10, height: max(r.height, 12) * scale + 10)
+                        .position(x: (r.midX) * scale, y: (r.midY) * scale)
+                        .allowsHitTesting(false)
                 }
 
                 // Inline text editor.
@@ -143,9 +162,16 @@ struct CanvasView: View {
     private func drawGesture(scale: CGFloat, displaySize: CGSize) -> some Gesture {
         DragGesture(minimumDistance: 1)
             .onChanged { value in
-                guard engine.tool.isDraggableShape else { return }
                 let start = imagePoint(value.startLocation, scale: scale)
                 let current = imagePoint(value.location, scale: scale)
+
+                // Select tool: grab the annotation under the cursor and drag it.
+                if engine.tool == .select {
+                    handleMove(start: start, current: current)
+                    return
+                }
+
+                guard engine.tool.isDraggableShape else { return }
                 if engine.selectedID == nil || engine.annotations.last?.tool != engine.tool {
                     var a = engine.makeAnnotation(start: start)
                     a.end = current
@@ -159,8 +185,27 @@ struct CanvasView: View {
                     engine.annotations.removeLast()
                     engine.setCrop(last.rect)
                 }
-                engine.selectedID = nil
+                if engine.tool == .select {
+                    move = nil          // keep selection, end the move session
+                } else {
+                    engine.selectedID = nil
+                }
             }
+    }
+
+    private func handleMove(start: CGPoint, current: CGPoint) {
+        if move == nil {
+            guard let id = engine.hitTest(start), let a = engine.annotation(id) else { return }
+            engine.selectedID = id
+            engine.beginInteractiveEdit()   // one undo checkpoint per drag
+            move = MoveState(id: id, origStart: a.start, origEnd: a.end, grab: start)
+        }
+        guard let m = move else { return }
+        let dx = current.x - m.grab.x
+        let dy = current.y - m.grab.y
+        engine.setPosition(id: m.id,
+                           start: CGPoint(x: m.origStart.x + dx, y: m.origStart.y + dy),
+                           end: CGPoint(x: m.origEnd.x + dx, y: m.origEnd.y + dy))
     }
 
     private func handleTap(_ location: CGPoint, scale: CGFloat) {

@@ -106,6 +106,40 @@ final class AnnotationEngine: ObservableObject {
         selectedID = nil
     }
 
+    // MARK: - Selection & moving (Select tool)
+
+    /// Records an undo checkpoint just before an interactive edit (e.g. a move).
+    func beginInteractiveEdit() { checkpoint() }
+
+    /// Returns the topmost annotation whose hit area contains `point` (image-space).
+    func hitTest(_ point: CGPoint) -> UUID? {
+        for a in annotations.reversed() {
+            let tol = max(a.lineWidth, 8) + 6
+            let area: CGRect
+            switch a.tool {
+            case .text:
+                let w = CGFloat(max(a.text.count, 1)) * a.fontSize * 0.6
+                area = CGRect(x: a.start.x, y: a.start.y - a.fontSize, width: w, height: a.fontSize * 1.6)
+                    .insetBy(dx: -tol, dy: -tol)
+            default:
+                area = a.rect.insetBy(dx: -tol, dy: -tol)
+            }
+            if area.contains(point) { return a.id }
+        }
+        return nil
+    }
+
+    /// Moves an annotation to an absolute start/end (used while dragging with Select).
+    func setPosition(id: UUID, start: CGPoint, end: CGPoint) {
+        guard let i = annotations.firstIndex(where: { $0.id == id }) else { return }
+        annotations[i].start = start
+        annotations[i].end = end
+    }
+
+    func annotation(_ id: UUID) -> Annotation? {
+        annotations.first { $0.id == id }
+    }
+
     func setCrop(_ rect: CGRect) {
         checkpoint()
         cropRect = rect.intersection(CGRect(origin: .zero, size: pixelSize))

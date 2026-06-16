@@ -11,11 +11,16 @@ struct EditorView: View {
     @StateObject private var engine: AnnotationEngine
     private let title: String
     private let onOCR: (NSImage) -> Void
+    private let onClose: () -> Void
 
-    init(image: NSImage, title: String, onOCR: @escaping (NSImage) -> Void) {
+    init(image: NSImage,
+         title: String,
+         onOCR: @escaping (NSImage) -> Void,
+         onClose: @escaping () -> Void = {}) {
         _engine = StateObject(wrappedValue: AnnotationEngine(image: image))
         self.title = title
         self.onOCR = onOCR
+        self.onClose = onClose
     }
 
     var body: some View {
@@ -31,7 +36,7 @@ struct EditorView: View {
 
             QuickActionsView(
                 engine: engine,
-                onCopy: copy,
+                onCopy: copyAndClose,
                 onSave: save,
                 onShare: share,
                 onOCR: { onOCR(engine.renderFlattened()) }
@@ -41,10 +46,25 @@ struct EditorView: View {
         .frame(minWidth: 640, minHeight: 480)
         .background(VST.Color.surface)
         .navigationTitle(title)
+        .background(keyboardShortcuts)
     }
 
-    private func copy() {
+    /// Hidden buttons that bind ⌘Z / ⌘⇧Z / ⌘C / ⌫ while the window is key.
+    private var keyboardShortcuts: some View {
+        ZStack {
+            Button("") { engine.undo() }.keyboardShortcut("z", modifiers: .command)
+            Button("") { engine.redo() }.keyboardShortcut("z", modifiers: [.command, .shift])
+            Button("") { copyAndClose() }.keyboardShortcut("c", modifiers: .command)
+            Button("") { engine.deleteSelected() }.keyboardShortcut(.delete, modifiers: [])
+        }
+        .opacity(0)
+        .allowsHitTesting(false)
+    }
+
+    /// Copy to the clipboard, then close the editor window (per user request).
+    private func copyAndClose() {
         ClipboardManager.copy(image: engine.renderFlattened())
+        onClose()
     }
 
     private func save() {

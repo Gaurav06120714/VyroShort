@@ -21,12 +21,15 @@ final class EditorWindowController {
     }
 
     private func makeWindow(image: NSImage, title: String, onOCR: @escaping (NSImage) -> Void) {
-        let view = EditorView(image: image, title: title, onOCR: onOCR)
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 820, height: 620),
             styleMask: [.titled, .closable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false
         )
+        // Copy auto-closes the editor — give the view a way to close its window.
+        let view = EditorView(image: image, title: title, onOCR: onOCR) { [weak window] in
+            window?.performClose(nil)
+        }
         window.title = "VyroShort — \(title)"
         window.titlebarAppearsTransparent = true
         window.isReleasedWhenClosed = false
