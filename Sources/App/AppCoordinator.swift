@@ -24,6 +24,8 @@ final class AppCoordinator: ObservableObject {
         self?.ingest(image: image)
     }
 
+    let ocr = OCRController()
+
     @Published private(set) var isReady = false
 
     func start() {
@@ -66,9 +68,9 @@ final class AppCoordinator: ObservableObject {
         }
     }
 
-    /// OCR entry point — fully implemented in M6.
+    /// Runs Vision OCR on the given image and presents the result panel.
     func runOCR(on image: NSImage) {
-        NotificationCenter.default.post(name: .vyroRunOCR, object: image)
+        ocr.run(on: image)
     }
 
     // MARK: - Capture intents (wired to the capture engine in M4)

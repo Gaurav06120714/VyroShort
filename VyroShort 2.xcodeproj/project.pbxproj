@@ -1,0 +1,447 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		18904E37C15B4F4DECFB9AD8 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1930AF2CCFD9B13600381394 /* AppSettings.swift */; };
+		32E4066A065682AB35D1AA24 /* VyroShortApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE1AF109D35638984F0380C /* VyroShortApp.swift */; };
+		426CB87F18F1D8266F9D8406 /* VyroShortTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D0E9B55499EAB93C20AEDA /* VyroShortTests.swift */; };
+		7D190BC11B28370614A0B443 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3922D06EDFF55E59421CBE /* AppDelegate.swift */; };
+		D2D126AA9DAD759C8CF603E4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42329F476179550A8017C439 /* SettingsView.swift */; };
+		F26E0189F7B40615C59172AC /* MenuBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7770769D7F5B3CD63EDB7769 /* MenuBarContent.swift */; };
+		F3BE51B6B573DE9B476A7FFD /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420D368A6EBED73C68F3BC6B /* AppCoordinator.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		506DF131EC1D22D382D9317B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD6F7132BF8C1BA8F5608C6C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66F1F07DB9054FF1046CFD5F;
+			remoteInfo = VyroShort;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1930AF2CCFD9B13600381394 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		420D368A6EBED73C68F3BC6B /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		42329F476179550A8017C439 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7770769D7F5B3CD63EDB7769 /* MenuBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContent.swift; sourceTree = "<group>"; };
+		AFE1AF109D35638984F0380C /* VyroShortApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VyroShortApp.swift; sourceTree = "<group>"; };
+		D9FC16484827149FD3757807 /* VyroShort.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VyroShort.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3E60948CCF549FC27450390 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EF3922D06EDFF55E59421CBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F7D0E9B55499EAB93C20AEDA /* VyroShortTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VyroShortTests.swift; sourceTree = "<group>"; };
+		FF6A76AEDE0978C80035886F /* VyroShortTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VyroShortTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0B5BF0B12AA0A2FEA95BF47B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				420D368A6EBED73C68F3BC6B /* AppCoordinator.swift */,
+				EF3922D06EDFF55E59421CBE /* AppDelegate.swift */,
+				7770769D7F5B3CD63EDB7769 /* MenuBarContent.swift */,
+				AFE1AF109D35638984F0380C /* VyroShortApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		0C4D9A530A854023D6B0A2FA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1930AF2CCFD9B13600381394 /* AppSettings.swift */,
+				42329F476179550A8017C439 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		1FAEC8FA2BCBC3E7A475D437 = {
+			isa = PBXGroup;
+			children = (
+				DC81B72D4400DEEC294FB868 /* Sources */,
+				C825EEE3565B15026CCE33AA /* Tests */,
+				3F8C5096C1EF643B57591BEE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3F8C5096C1EF643B57591BEE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D9FC16484827149FD3757807 /* VyroShort.app */,
+				FF6A76AEDE0978C80035886F /* VyroShortTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C825EEE3565B15026CCE33AA /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F7D0E9B55499EAB93C20AEDA /* VyroShortTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		DC81B72D4400DEEC294FB868 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E3E60948CCF549FC27450390 /* Info.plist */,
+				0B5BF0B12AA0A2FEA95BF47B /* App */,
+				0C4D9A530A854023D6B0A2FA /* Settings */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5AF54960FA85FEB7BF2E0906 /* VyroShortTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A844D233601415DF5719665 /* Build configuration list for PBXNativeTarget "VyroShortTests" */;
+			buildPhases = (
+				042965A33B8EB960C66FD351 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				745CC9208310D6B156629F73 /* PBXTargetDependency */,
+			);
+			name = VyroShortTests;
+			packageProductDependencies = (
+			);
+			productName = VyroShortTests;
+			productReference = FF6A76AEDE0978C80035886F /* VyroShortTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		66F1F07DB9054FF1046CFD5F /* VyroShort */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C43F6E6204BEFC560F31E8F /* Build configuration list for PBXNativeTarget "VyroShort" */;
+			buildPhases = (
+				7F5801E022FE7E92735A566A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VyroShort;
+			packageProductDependencies = (
+			);
+			productName = VyroShort;
+			productReference = D9FC16484827149FD3757807 /* VyroShort.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BD6F7132BF8C1BA8F5608C6C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					5AF54960FA85FEB7BF2E0906 = {
+						ProvisioningStyle = Automatic;
+					};
+					66F1F07DB9054FF1046CFD5F = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F6FE391DADA65BA61B238A69 /* Build configuration list for PBXProject "VyroShort" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1FAEC8FA2BCBC3E7A475D437;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3F8C5096C1EF643B57591BEE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				66F1F07DB9054FF1046CFD5F /* VyroShort */,
+				5AF54960FA85FEB7BF2E0906 /* VyroShortTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		042965A33B8EB960C66FD351 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				426CB87F18F1D8266F9D8406 /* VyroShortTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F5801E022FE7E92735A566A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3BE51B6B573DE9B476A7FFD /* AppCoordinator.swift in Sources */,
+				7D190BC11B28370614A0B443 /* AppDelegate.swift in Sources */,
+				18904E37C15B4F4DECFB9AD8 /* AppSettings.swift in Sources */,
+				F26E0189F7B40615C59172AC /* MenuBarContent.swift in Sources */,
+				D2D126AA9DAD759C8CF603E4 /* SettingsView.swift in Sources */,
+				32E4066A065682AB35D1AA24 /* VyroShortApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		745CC9208310D6B156629F73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66F1F07DB9054FF1046CFD5F /* VyroShort */;
+			targetProxy = 506DF131EC1D22D382D9317B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2EBE5654CEEB3BB5751D8016 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vyro.vyroshort.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VyroShort.app/Contents/MacOS/VyroShort";
+			};
+			name = Release;
+		};
+		67A81368F184989C867FDCAC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = VyroShort.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VyroShort;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gaurav. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vyro.vyroshort;
+				PRODUCT_NAME = VyroShort;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		6AF0658BB1DFDEA297D4E75B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		91C1259BE10F176AE964C679 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = VyroShort.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VyroShort;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Gaurav. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vyro.vyroshort;
+				PRODUCT_NAME = VyroShort;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		9265518C77DFCFC3763A84C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vyro.vyroshort.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VyroShort.app/Contents/MacOS/VyroShort";
+			};
+			name = Debug;
+		};
+		EB246C0BAD93B17C729B8BD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A844D233601415DF5719665 /* Build configuration list for PBXNativeTarget "VyroShortTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9265518C77DFCFC3763A84C5 /* Debug */,
+				2EBE5654CEEB3BB5751D8016 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1C43F6E6204BEFC560F31E8F /* Build configuration list for PBXNativeTarget "VyroShort" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				67A81368F184989C867FDCAC /* Debug */,
+				91C1259BE10F176AE964C679 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F6FE391DADA65BA61B238A69 /* Build configuration list for PBXProject "VyroShort" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AF0658BB1DFDEA297D4E75B /* Debug */,
+				EB246C0BAD93B17C729B8BD7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BD6F7132BF8C1BA8F5608C6C /* Project object */;
+}
