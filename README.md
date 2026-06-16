@@ -7,6 +7,15 @@ Capture → Annotate → Organize → Copy → Share — in under 3 seconds.
 
 Native SwiftUI · ScreenCaptureKit · Vision OCR · SwiftData
 
+**✅ Status: Completed — v1.0.0** · macOS 15+ · Apple Silicon
+
+### ⬇️ Download
+Grab the ready-to-run app: **[release/VyroShort.dmg](release/VyroShort.dmg)**
+(or the latest [GitHub Release](https://github.com/Gaurav06120714/VyroShort/releases)).
+
+Open the DMG → drag **VyroShort** to **Applications** → first launch: right-click → **Open**.
+On first run it asks for **Screen Recording** permission (grant it, then relaunch).
+
 </div>
 
 ---
