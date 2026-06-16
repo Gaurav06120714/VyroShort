@@ -33,9 +33,15 @@ final class AppCoordinator: ObservableObject {
         if settings.showStackPanel {
             stackPanel.show()
         }
+        HotKeyManager.shared.register(
+            region: { [weak self] in self?.captureRegion() },
+            window: { [weak self] in self?.captureWindow() },
+            fullScreen: { [weak self] in self?.captureFullScreen() }
+        )
     }
 
     func shutdown() {
+        HotKeyManager.shared.unregisterAll()
         isReady = false
     }
 

@@ -13,6 +13,7 @@ enum ClipboardManager {
         let pb = NSPasteboard.general
         pb.clearContents()
         pb.writeObjects([image])
+        ClipboardHistory.shared.record(image)
     }
 
     static func copy(text: String) {
