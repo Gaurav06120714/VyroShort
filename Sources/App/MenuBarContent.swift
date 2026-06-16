@@ -20,6 +20,10 @@ struct MenuBarContent: View {
 
         Divider()
 
+        Button("Toggle Screenshot Stack") { coordinator.toggleStack() }
+
+        Divider()
+
         SettingsLink {
             Text("Settings…")
         }

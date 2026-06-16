@@ -12,17 +12,42 @@ import SwiftUI
 
 @MainActor
 final class AppCoordinator: ObservableObject {
-    // Modules (populated by later build modules).
+    // Modules.
     let settings = AppSettings.shared
+    let stack = ScreenshotStack()
+
+    private(set) lazy var stackPanel = StackPanelController(stack: stack) { [weak self] item in
+        self?.openEditor(for: item)
+    }
 
     @Published private(set) var isReady = false
 
     func start() {
         isReady = true
+        if settings.showStackPanel {
+            stackPanel.show()
+        }
     }
 
     func shutdown() {
         isReady = false
+    }
+
+    // MARK: - Stack
+
+    func toggleStack() {
+        stackPanel.toggle()
+    }
+
+    /// Adds a freshly captured image to the stack (wired fully in M4/M5).
+    func ingest(image: NSImage) {
+        stack.add(image: image)
+        stackPanel.show()
+    }
+
+    func openEditor(for item: ScreenshotItem) {
+        // Implemented in the Editor module (M5).
+        NSWorkspace.shared.activateFileViewerSelecting([CaptureStorage.fileURL(for: item.fileName)])
     }
 
     // MARK: - Capture intents (wired to the capture engine in M4)
