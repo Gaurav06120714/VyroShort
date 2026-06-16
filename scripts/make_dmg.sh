@@ -22,8 +22,11 @@ S="$STAGE/VyroShort.app"
 # Prefer the stable self-signed identity (scripts/setup_signing.sh) so Screen
 # Recording permission survives rebuilds; fall back to ad-hoc if it's absent.
 IDENTITY="VyroShort Self-Signed"
-if security find-identity -v -p codesigning 2>/dev/null | grep -q "$IDENTITY"; then
+SIGN_KC="$HOME/Library/Keychains/VyroShortSigning.keychain-db"
+KC_ARGS=()
+if [ -f "$SIGN_KC" ] && security find-identity "$SIGN_KC" 2>/dev/null | grep -q "$IDENTITY"; then
   SIGN="$IDENTITY"
+  KC_ARGS=(--keychain "$SIGN_KC")
   echo ">>> Signing with stable identity: $IDENTITY"
 else
   SIGN="-"
@@ -31,7 +34,7 @@ else
 fi
 xattr -c "$S"; find "$S" -exec xattr -c {} \; 2>/dev/null || true
 codesign --remove-signature "$S" 2>/dev/null || true
-codesign --force --deep --sign "$SIGN" "$S"
+codesign --force --deep --sign "$SIGN" "${KC_ARGS[@]}" "$S"
 codesign --verify --strict "$S" && echo ">>> staged app signature OK"
 
 ln -s /Applications "$STAGE/Applications"

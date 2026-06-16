@@ -44,7 +44,12 @@ EOF
 echo ">>> Generating self-signed code-signing certificate (10 years)"
 openssl req -x509 -newkey rsa:2048 -nodes -days 3650 \
   -keyout "$WORK/key.pem" -out "$WORK/cert.pem" -config "$WORK/openssl.cnf"
-openssl pkcs12 -export -inkey "$WORK/key.pem" -in "$WORK/cert.pem" \
+# -legacy: OpenSSL 3 must write the older PKCS12 format that Apple's
+# `security import` (LibreSSL-based) can read, otherwise MAC verification fails.
+LEGACY=""
+if openssl version 2>/dev/null | grep -q "OpenSSL 3"; then LEGACY="-legacy"; fi
+# shellcheck disable=SC2086
+openssl pkcs12 -export $LEGACY -inkey "$WORK/key.pem" -in "$WORK/cert.pem" \
   -name "$IDENTITY" -out "$WORK/id.p12" -passout pass:"$KC_PW"
 
 echo ">>> Importing identity into keychain"
