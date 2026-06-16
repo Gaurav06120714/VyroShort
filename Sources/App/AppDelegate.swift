@@ -14,6 +14,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+
+        // First-launch: offer to move into /Applications. If accepted, this
+        // instance relaunches from there, so stop setting up the current one.
+        if MoveToApplications.offerIfNeeded() { return }
+
         requestScreenRecordingIfNeeded()
         coordinator.start()
     }
