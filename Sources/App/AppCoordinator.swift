@@ -43,20 +43,32 @@ final class AppCoordinator: ObservableObject {
         stackPanel.toggle()
     }
 
-    /// Adds a freshly captured image to the stack and copies it to the clipboard.
+    /// Adds a freshly captured image to the stack, copies it, and opens the editor.
     func ingest(image: NSImage) {
         if settings.autoCopyOnCapture {
             ClipboardManager.copy(image: image)
         }
-        stack.add(image: image)
+        let item = stack.add(image: image)
         if settings.showStackPanel {
             stackPanel.show()
         }
+        openEditor(image: image, title: item?.name ?? "Screenshot")
     }
 
     func openEditor(for item: ScreenshotItem) {
-        // Implemented in the Editor module (M5).
-        NSWorkspace.shared.activateFileViewerSelecting([CaptureStorage.fileURL(for: item.fileName)])
+        guard let image = stack.image(for: item) else { return }
+        openEditor(image: image, title: item.name)
+    }
+
+    private func openEditor(image: NSImage, title: String) {
+        EditorWindowController.present(image: image, title: title) { [weak self] flattened in
+            self?.runOCR(on: flattened)
+        }
+    }
+
+    /// OCR entry point — fully implemented in M6.
+    func runOCR(on image: NSImage) {
+        NotificationCenter.default.post(name: .vyroRunOCR, object: image)
     }
 
     // MARK: - Capture intents (wired to the capture engine in M4)
@@ -97,4 +109,5 @@ extension Notification.Name {
     static let vyroCaptureRegion = Notification.Name("vyro.capture.region")
     static let vyroCaptureWindow = Notification.Name("vyro.capture.window")
     static let vyroCaptureFullScreen = Notification.Name("vyro.capture.fullscreen")
+    static let vyroRunOCR = Notification.Name("vyro.ocr.run")
 }
