@@ -20,6 +20,10 @@ final class AppCoordinator: ObservableObject {
         self?.openEditor(for: item)
     }
 
+    private(set) lazy var capture = CaptureController { [weak self] image in
+        self?.ingest(image: image)
+    }
+
     @Published private(set) var isReady = false
 
     func start() {
@@ -39,10 +43,15 @@ final class AppCoordinator: ObservableObject {
         stackPanel.toggle()
     }
 
-    /// Adds a freshly captured image to the stack (wired fully in M4/M5).
+    /// Adds a freshly captured image to the stack and copies it to the clipboard.
     func ingest(image: NSImage) {
+        if settings.autoCopyOnCapture {
+            ClipboardManager.copy(image: image)
+        }
         stack.add(image: image)
-        stackPanel.show()
+        if settings.showStackPanel {
+            stackPanel.show()
+        }
     }
 
     func openEditor(for item: ScreenshotItem) {
@@ -53,16 +62,21 @@ final class AppCoordinator: ObservableObject {
     // MARK: - Capture intents (wired to the capture engine in M4)
 
     func captureRegion() {
-        // Implemented in Capture module.
-        NotificationCenter.default.post(name: .vyroCaptureRegion, object: nil)
+        capture.delayed(seconds: settings.captureDelaySeconds) { [weak self] in
+            self?.capture.region()
+        }
     }
 
     func captureWindow() {
-        NotificationCenter.default.post(name: .vyroCaptureWindow, object: nil)
+        capture.delayed(seconds: settings.captureDelaySeconds) { [weak self] in
+            self?.capture.window()
+        }
     }
 
     func captureFullScreen() {
-        NotificationCenter.default.post(name: .vyroCaptureFullScreen, object: nil)
+        capture.delayed(seconds: settings.captureDelaySeconds) { [weak self] in
+            self?.capture.fullScreen()
+        }
     }
 
     func openSettings() {
