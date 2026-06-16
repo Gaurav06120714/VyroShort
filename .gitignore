@@ -22,3 +22,6 @@ VyroShort.xcodeproj/
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+# Packaging output
+dist/

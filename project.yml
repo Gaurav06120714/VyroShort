@@ -27,6 +27,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.vyro.vyroshort
         PRODUCT_NAME: VyroShort
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         INFOPLIST_KEY_LSUIElement: YES
         INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Gaurav. All rights reserved."
         INFOPLIST_KEY_CFBundleDisplayName: VyroShort
