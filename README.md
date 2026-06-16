@@ -65,9 +65,19 @@ xcodebuild -project VyroShort.xcodeproj -scheme VyroShort \
   -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test
 ```
 
-VyroShort runs as a **menu-bar app** (no Dock icon). On first capture, macOS will ask
-for **Screen Recording** permission — grant it in *System Settings → Privacy & Security →
-Screen Recording*, then relaunch.
+VyroShort runs as a **menu-bar app** (no Dock icon). On first launch it offers to move
+itself into `/Applications`, then asks for **Screen Recording** permission — grant it in
+*System Settings → Privacy & Security → Screen Recording*, then relaunch.
+
+### Packaging a DMG
+```bash
+scripts/setup_signing.sh   # once — creates a stable self-signed code-signing identity
+scripts/make_dmg.sh        # builds dist/VyroShort.dmg (drag-to-Applications)
+```
+`setup_signing.sh` creates a reusable self-signed certificate so every rebuild carries the
+**same code signature** — meaning macOS keeps the granted Screen Recording permission
+across updates instead of asking again. Without it, `make_dmg.sh` falls back to ad-hoc
+signing (permission must be re-granted after each rebuild).
 
 ## Architecture
 MVVM, feature-modular. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
