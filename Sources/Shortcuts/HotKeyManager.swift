@@ -4,7 +4,8 @@
 //
 //  Global keyboard shortcuts via Carbon RegisterEventHotKey
 //  (works without extra entitlements). Defaults:
-//    ⌘⇧2 Region · ⌘⇧3 Window · ⌘⇧4 Full Screen
+//    ⌘⇧Q Region · ⌘⇧2 Window · ⌘⇧1 Full Screen
+//    (⌘⇧3/4/5 are reserved by macOS for its own screenshots, so we avoid them.)
 //
 
 import AppKit
@@ -30,9 +31,9 @@ final class HotKeyManager {
 
         installEventHandler()
         let mods = UInt32(cmdKey | shiftKey)
-        register(action: .region, keyCode: UInt32(kVK_ANSI_2), modifiers: mods)
-        register(action: .window, keyCode: UInt32(kVK_ANSI_3), modifiers: mods)
-        register(action: .fullScreen, keyCode: UInt32(kVK_ANSI_4), modifiers: mods)
+        register(action: .region, keyCode: UInt32(kVK_ANSI_Q), modifiers: mods)
+        register(action: .window, keyCode: UInt32(kVK_ANSI_2), modifiers: mods)
+        register(action: .fullScreen, keyCode: UInt32(kVK_ANSI_1), modifiers: mods)
     }
 
     func unregisterAll() {

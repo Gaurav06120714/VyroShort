@@ -10,13 +10,13 @@ struct MenuBarContent: View {
 
     var body: some View {
         Button("Capture Region") { coordinator.captureRegion() }
-            .keyboardShortcut("2", modifiers: [.command, .shift])
+            .keyboardShortcut("q", modifiers: [.command, .shift])
 
         Button("Capture Window") { coordinator.captureWindow() }
-            .keyboardShortcut("3", modifiers: [.command, .shift])
+            .keyboardShortcut("2", modifiers: [.command, .shift])
 
         Button("Capture Full Screen") { coordinator.captureFullScreen() }
-            .keyboardShortcut("4", modifiers: [.command, .shift])
+            .keyboardShortcut("1", modifiers: [.command, .shift])
 
         Divider()
 

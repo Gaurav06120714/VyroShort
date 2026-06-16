@@ -19,9 +19,11 @@ flagship **Screenshot Stack** for managing recent captures without ever leaving 
 ## Features
 
 ### Capture
-- **Region** — `⌘⇧2` — dimmed freeze overlay, crosshair, live pixel dimensions, drag to select.
-- **Window** — `⌘⇧3` — click any on-screen window (shadows preserved).
-- **Full Screen** — `⌘⇧4` — display under the cursor, Retina resolution, multi-monitor.
+- **Region** — `⌘⇧Q` — dimmed freeze overlay, crosshair, live pixel dimensions, drag to select.
+- **Window** — `⌘⇧2` — click any on-screen window (shadows preserved).
+- **Full Screen** — `⌘⇧1` — display under the cursor, Retina resolution, multi-monitor.
+
+> macOS reserves `⌘⇧3`/`⌘⇧4`/`⌘⇧5` for its own screenshots, so VyroShort uses `⌘⇧Q`/`⌘⇧2`/`⌘⇧1` to stay conflict-free.
 - **Delayed capture** — none / 3s / 5s / 10s, set in Settings.
 - Every capture is auto-copied to the clipboard and added to the stack.
 

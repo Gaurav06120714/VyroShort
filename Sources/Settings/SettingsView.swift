@@ -48,9 +48,9 @@ struct SettingsView: View {
 
     private var shortcutsTab: some View {
         Form {
-            shortcut("Capture Region", "⌘ ⇧ 2")
-            shortcut("Capture Window", "⌘ ⇧ 3")
-            shortcut("Capture Full Screen", "⌘ ⇧ 4")
+            shortcut("Capture Region", "⌘ ⇧ Q")
+            shortcut("Capture Window", "⌘ ⇧ 2")
+            shortcut("Capture Full Screen", "⌘ ⇧ 1")
             shortcut("Copy", "⌘ C")
             shortcut("Save", "⌘ S")
             shortcut("Undo / Redo", "⌘ Z · ⌘ ⇧ Z")
