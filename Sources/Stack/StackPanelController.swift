@@ -31,7 +31,7 @@ final class StackPanelController {
                 )
             }
             panel.positionBottomLeft()
-            panel.alphaValue = 0.62   // maximally see-through frosted look
+            panel.alphaValue = 1.0    // keep text crisp; transparency comes from the material
             self.panel = panel
         }
         panel?.orderFrontRegardless()

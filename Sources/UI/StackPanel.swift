@@ -37,7 +37,18 @@ struct StackPanel: View {
             }
         }
         .frame(width: 260, height: 240, alignment: .top)
-        .glassPanel()
+        // Ultra-thin material = maximally see-through frosted glass, while text
+        // painted on top stays fully opaque (crisp, not faded).
+        .background(
+            RoundedRectangle(cornerRadius: VST.Radius.lg, style: .continuous)
+                .fill(.ultraThinMaterial)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: VST.Radius.lg, style: .continuous)
+                .strokeBorder(.white.opacity(0.12), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: VST.Radius.lg, style: .continuous))
+        .shadow(color: .black.opacity(0.22), radius: 18, y: 8)
     }
 
     private var header: some View {
@@ -113,10 +124,11 @@ private struct SwipeCard: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.name)
                     .font(VST.Font.caption)
+                    .foregroundStyle(.primary.opacity(0.78))   // somewhat dark, not heavy
                     .lineLimit(1)
                 Text("\(item.pixelWidth)×\(item.pixelHeight)")
                     .font(VST.Font.caption)
-                    .foregroundStyle(VST.Color.secondaryLabel)
+                    .foregroundStyle(.primary.opacity(0.5))
             }
             Spacer(minLength: 0)
             if item.isFavorite {
