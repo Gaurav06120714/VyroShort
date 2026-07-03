@@ -41,6 +41,18 @@ struct SettingsView: View {
         .formStyle(.grouped).padding()
     }
 
+    private func chooseSaveFolder() {
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        panel.directoryURL = settings.saveFolderURL
+        panel.prompt = "Choose"
+        if panel.runModal() == .OK, let url = panel.url {
+            settings.saveFolderURL = url
+        }
+    }
+
     static var appVersion: String {
         let v = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         let b = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
@@ -80,6 +92,16 @@ struct SettingsView: View {
                     Text("3 seconds").tag(3)
                     Text("5 seconds").tag(5)
                     Text("10 seconds").tag(10)
+                }
+                LabeledContent("Save to") {
+                    HStack {
+                        Text(settings.saveFolderURL.lastPathComponent)
+                            .foregroundStyle(VST.Color.secondaryLabel)
+                        Button("Change…") { chooseSaveFolder() }
+                        Button("Reveal") {
+                            NSWorkspace.shared.activateFileViewerSelecting([settings.saveFolderURL])
+                        }
+                    }
                 }
                 LabeledContent("Stack limit", value: "\(ScreenshotStack.maxItems) screenshots")
                 LabeledContent("Formats", value: "PNG · JPG · PDF · TIFF")

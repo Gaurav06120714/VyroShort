@@ -30,6 +30,17 @@ final class AppSettings: ObservableObject {
     @AppStorage("playCaptureSound") var playCaptureSound: Bool = true
     @AppStorage("showStackPanel") var showStackPanel: Bool = true
     @AppStorage("captureDelaySeconds") var captureDelaySeconds: Int = 0
+    @AppStorage("saveFolderPath") var saveFolderPath: String = ""
+
+    /// Where the Save button writes files. Defaults to ~/Desktop.
+    var saveFolderURL: URL {
+        get {
+            if !saveFolderPath.isEmpty { return URL(fileURLWithPath: saveFolderPath) }
+            return FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
+                ?? FileManager.default.homeDirectoryForCurrentUser
+        }
+        set { saveFolderPath = newValue.path }
+    }
 
     var appearanceMode: AppearanceMode {
         get { AppearanceMode(rawValue: appearanceModeRaw) ?? .system }

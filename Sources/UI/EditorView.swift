@@ -69,7 +69,10 @@ struct EditorView: View {
     }
 
     private func save() {
-        _ = ShareManager.saveWithPanel(image: engine.renderFlattened(), defaultName: title)
+        // Save straight into the configured folder (Desktop by default) and reveal it.
+        ShareManager.saveToFolder(image: engine.renderFlattened(),
+                                  name: title,
+                                  folder: AppSettings.shared.saveFolderURL)
     }
 
     private func share(from view: NSView) {

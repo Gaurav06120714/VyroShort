@@ -22,6 +22,27 @@ enum ShareManager {
         }
     }
 
+    /// Saves a PNG straight into `folder` and reveals it in Finder. Returns the URL.
+    @discardableResult
+    static func saveToFolder(image: NSImage, name: String, folder: URL) -> URL? {
+        let safeName = name.replacingOccurrences(of: "/", with: "-")
+        var url = folder.appendingPathComponent("\(safeName).png")
+        // Avoid clobbering an existing file.
+        var i = 2
+        while FileManager.default.fileExists(atPath: url.path) {
+            url = folder.appendingPathComponent("\(safeName) \(i).png")
+            i += 1
+        }
+        guard let data = encode(image: image, as: .png) else { return nil }
+        do {
+            try data.write(to: url)
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+            return url
+        } catch {
+            return nil
+        }
+    }
+
     static func share(image: NSImage, from view: NSView) {
         let picker = NSSharingServicePicker(items: [image])
         picker.show(relativeTo: view.bounds, of: view, preferredEdge: .minY)
