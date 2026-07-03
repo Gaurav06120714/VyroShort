@@ -12,39 +12,52 @@ import AppKit
 final class RegionSelectionOverlay {
     enum Mode { case region, window }
 
-    private var window: NSWindow?
+    private var window: OverlayWindow?
+    private var view: SelectionView?
+    private var lastUnionFrame: CGRect = .zero
     private var completion: ((CGRect?) -> Void)?
 
     func begin(mode: Mode, completion: @escaping (CGRect?) -> Void) {
         self.completion = completion
 
         let unionFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
-        let window = OverlayWindow(contentRect: unionFrame, styleMask: .borderless,
-                                   backing: .buffered, defer: false)
-        window.level = .screenSaver
-        window.backgroundColor = .clear
-        window.isOpaque = false
-        window.ignoresMouseEvents = false
-        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
 
-        let view = SelectionView(frame: NSRect(origin: .zero, size: unionFrame.size))
+        // Reuse the overlay window/view across captures — building a full-screen
+        // window each time is what made ⌘⇧Q feel slow.
+        let window: OverlayWindow
+        let view: SelectionView
+        if let w = self.window, let v = self.view, lastUnionFrame == unionFrame {
+            window = w; view = v
+        } else {
+            self.window?.orderOut(nil)
+            window = OverlayWindow(contentRect: unionFrame, styleMask: .borderless,
+                                   backing: .buffered, defer: false)
+            window.level = .screenSaver
+            window.backgroundColor = .clear
+            window.isOpaque = false
+            window.ignoresMouseEvents = false
+            window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
+            view = SelectionView(frame: NSRect(origin: .zero, size: unionFrame.size))
+            view.wantsLayer = true
+            window.contentView = view
+            self.window = window
+            self.view = view
+            lastUnionFrame = unionFrame
+        }
+
+        view.reset()
         view.mode = mode
         view.originOffset = unionFrame.origin
         view.onFinish = { [weak self] rect in self?.finish(rect) }
         view.onCancel = { [weak self] in self?.finish(nil) }
-        window.contentView = view
 
-        self.window = window
-        // Show immediately without the (slow) full app activation animation; the
-        // overlay is above everything and becomes key so it still receives ESC.
         window.orderFrontRegardless()
         window.makeKey()
         window.makeFirstResponder(view)
     }
 
     private func finish(_ rect: CGRect?) {
-        window?.orderOut(nil)
-        window = nil
+        window?.orderOut(nil)      // keep window alive for reuse
         let c = completion
         completion = nil
         c?(rect)
@@ -69,6 +82,14 @@ private final class SelectionView: NSView {
     private var mouseLocation: CGPoint = .zero
 
     override var acceptsFirstResponder: Bool { true }
+
+    /// Clears state so a reused overlay starts fresh.
+    func reset() {
+        startPoint = nil
+        currentRect = .zero
+        mouseLocation = .zero
+        needsDisplay = true
+    }
 
     override func resetCursorRects() {
         addCursorRect(bounds, cursor: .crosshair)

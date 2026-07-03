@@ -91,6 +91,10 @@ final class ScreenCaptureManager {
         return config
     }
 
+    private var cachedContent: SCShareableContent?
+    private var cachedAt: Date = .distantPast
+    private let cacheTTL: TimeInterval = 3
+
     /// Pre-loads shareable content so the first real capture doesn't pay the
     /// cold-start cost of spinning up ScreenCaptureKit.
     func warmUp() async {
@@ -98,7 +102,14 @@ final class ScreenCaptureManager {
     }
 
     private func shareableContent() async throws -> SCShareableContent {
-        try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+        // Reuse recently-fetched content — enumerating windows is the slow part.
+        if let cached = cachedContent, Date().timeIntervalSince(cachedAt) < cacheTTL {
+            return cached
+        }
+        let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+        cachedContent = content
+        cachedAt = .now
+        return content
     }
 
     private func displayUnderCursor(in content: SCShareableContent) -> SCDisplay? {
