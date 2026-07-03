@@ -35,8 +35,10 @@ final class RegionSelectionOverlay {
         window.contentView = view
 
         self.window = window
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        // Show immediately without the (slow) full app activation animation; the
+        // overlay is above everything and becomes key so it still receives ESC.
+        window.orderFrontRegardless()
+        window.makeKey()
         window.makeFirstResponder(view)
     }
 
