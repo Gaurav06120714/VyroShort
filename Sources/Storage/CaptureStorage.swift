@@ -54,7 +54,14 @@ enum CaptureStorage {
     }
 
     static func delete(fileName: String, thumbnailName: String?) {
-        try? FileManager.default.removeItem(at: fileURL(for: fileName))
+        // Move the full-res screenshot to the Trash so it can be recovered;
+        // the thumbnail is a derived cache, so just remove it.
+        let fileURL = fileURL(for: fileName)
+        do {
+            try FileManager.default.trashItem(at: fileURL, resultingItemURL: nil)
+        } catch {
+            try? FileManager.default.removeItem(at: fileURL)   // fallback
+        }
         if let t = thumbnailName {
             try? FileManager.default.removeItem(at: thumbnailURL(for: t))
         }
