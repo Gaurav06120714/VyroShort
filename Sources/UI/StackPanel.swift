@@ -29,7 +29,6 @@ struct StackPanel: View {
                                 onFavorite: { stack.toggleFavorite(item) },
                                 onDelete: { stack.delete(item) }
                             )
-                            .onTapGesture { toggleSelection(item) }
                         }
                     }
                     .padding(.horizontal, VST.Spacing.sm)
@@ -48,11 +47,6 @@ struct StackPanel: View {
             Text("Stack")
                 .font(VST.Font.headline)
             Spacer()
-            if !stack.selection.isEmpty {
-                ToolButton(systemImage: "trash", label: "Delete selected", tint: VST.Color.error) {
-                    stack.deleteSelected()
-                }
-            }
             ToolButton(systemImage: "xmark", label: "Hide stack") { onClose() }
         }
         .padding(.horizontal, VST.Spacing.md)
@@ -76,13 +70,6 @@ struct StackPanel: View {
         .frame(maxWidth: .infinity)
     }
 
-    private func toggleSelection(_ item: ScreenshotItem) {
-        if stack.selection.contains(item.id) {
-            stack.selection.remove(item.id)
-        } else {
-            stack.selection.insert(item.id)
-        }
-    }
 }
 
 private struct StackCard: View {
@@ -113,23 +100,27 @@ private struct StackCard: View {
                     .foregroundStyle(VST.Color.warning)
             }
             if hovering {
+                ToolButton(systemImage: "pencil", label: "Edit") { onOpen() }
                 ToolButton(systemImage: item.isFavorite ? "star.slash" : "star",
                            label: "Favorite") { onFavorite() }
                 ToolButton(systemImage: "trash", label: "Delete", tint: VST.Color.error) { onDelete() }
             }
         }
         .padding(VST.Spacing.sm)
+        .contentShape(Rectangle())
         .background(
             RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
                 .fill(isSelected ? VST.Color.accentSoft
-                      : (hovering ? Color.primary.opacity(0.06) : Color.primary.opacity(0.03)))
+                      : (hovering ? Color.primary.opacity(0.08) : Color.primary.opacity(0.03)))
         )
         .overlay(
             RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
-                .strokeBorder(isSelected ? VST.Color.accent.opacity(0.6) : .clear, lineWidth: 1)
+                .strokeBorder(hovering ? VST.Color.accent.opacity(0.5) : .clear, lineWidth: 1)
         )
         .onHover { hovering = $0 }
-        .onTapGesture(count: 2) { onOpen() }
+        // Single click opens the editor for fast, easy editing.
+        .onTapGesture { onOpen() }
+        .help("Click to edit")
         .animation(VST.Motion.quick, value: hovering)
     }
 
