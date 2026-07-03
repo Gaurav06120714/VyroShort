@@ -24,7 +24,9 @@ final class FloatingPanel<Content: View>: NSPanel {
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         titleVisibility = .hidden
         titlebarAppearsTransparent = true
-        isMovableByWindowBackground = true
+        // Must be false so drags (e.g. swipe-to-delete) reach the SwiftUI content
+        // instead of moving the whole window.
+        isMovableByWindowBackground = false
         backgroundColor = .clear
         isOpaque = false
         hasShadow = false

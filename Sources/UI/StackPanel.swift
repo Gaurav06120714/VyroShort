@@ -84,7 +84,7 @@ private struct SwipeCard: View {
     @State private var offset: CGFloat = 0
     @State private var hovering = false
 
-    private let deleteThreshold: CGFloat = -80
+    private let deleteThreshold: CGFloat = -60
 
     var body: some View {
         ZStack(alignment: .trailing) {
@@ -101,7 +101,7 @@ private struct SwipeCard: View {
 
             card
                 .offset(x: offset)
-                .gesture(swipe)
+                .highPriorityGesture(swipe)
                 .onTapGesture { if offset == 0 { onOpen() } }
         }
         .frame(height: 52)
@@ -125,10 +125,8 @@ private struct SwipeCard: View {
                     .foregroundStyle(VST.Color.warning)
             }
             if hovering && offset == 0 {
-                Image(systemName: "pencil")
-                    .font(.system(size: 11))
-                    .foregroundStyle(VST.Color.accent)
-                    .padding(.trailing, 2)
+                ToolButton(systemImage: "pencil", label: "Edit") { onOpen() }
+                ToolButton(systemImage: "trash", label: "Delete", tint: VST.Color.error) { onDelete() }
             }
         }
         .padding(VST.Spacing.sm)
@@ -148,7 +146,7 @@ private struct SwipeCard: View {
     }
 
     private var swipe: some Gesture {
-        DragGesture(minimumDistance: 6)
+        DragGesture(minimumDistance: 3)
             .onChanged { value in
                 offset = min(0, value.translation.width)   // left only
             }
