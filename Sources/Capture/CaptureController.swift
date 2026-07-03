@@ -27,6 +27,9 @@ final class CaptureController {
     }
 
     func region() {
+        // Pre-fetch shareable content while the user is selecting, so the capture
+        // after they release is instant.
+        warmUp()
         overlay.begin(mode: .region) { [weak self] rect in
             guard let self, let rect, rect.width > 1, rect.height > 1 else { return }
             Task { await self.run { try await self.manager.captureRegion(rect) } }
@@ -34,6 +37,7 @@ final class CaptureController {
     }
 
     func window() {
+        warmUp()
         overlay.begin(mode: .window) { [weak self] rect in
             guard let self, let rect else { return }
             let point = CGPoint(x: rect.minX, y: rect.minY)

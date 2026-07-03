@@ -93,7 +93,7 @@ final class ScreenCaptureManager {
 
     private var cachedContent: SCShareableContent?
     private var cachedAt: Date = .distantPast
-    private let cacheTTL: TimeInterval = 3
+    private let cacheTTL: TimeInterval = 10
 
     /// Pre-loads shareable content so the first real capture doesn't pay the
     /// cold-start cost of spinning up ScreenCaptureKit.
