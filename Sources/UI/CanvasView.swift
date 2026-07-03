@@ -99,6 +99,7 @@ struct CanvasView: View {
     @State private var editingText: String = ""
     @FocusState private var textFocused: Bool
     @State private var move: MoveState?
+    @State private var activeDrawID: UUID?     // set while a shape is being drawn
 
     private struct MoveState {
         let id: UUID
@@ -172,10 +173,12 @@ struct CanvasView: View {
                 }
 
                 guard engine.tool.isDraggableShape else { return }
-                if engine.selectedID == nil || engine.annotations.last?.tool != engine.tool {
+                // Start a new shape on the first change of each drag; update it after.
+                if activeDrawID == nil {
                     var a = engine.makeAnnotation(start: start)
                     a.end = current
                     engine.beginAnnotation(a)
+                    activeDrawID = a.id
                 } else {
                     engine.updateLast(end: current)
                 }
@@ -185,11 +188,9 @@ struct CanvasView: View {
                     engine.annotations.removeLast()
                     engine.setCrop(last.rect)
                 }
-                if engine.tool == .select {
-                    move = nil          // keep selection, end the move session
-                } else {
-                    engine.selectedID = nil
-                }
+                activeDrawID = nil
+                move = nil
+                if engine.tool != .select { engine.selectedID = nil }
             }
     }
 
