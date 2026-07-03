@@ -239,13 +239,14 @@ private extension View {
     func liquidGlass(cornerRadius r: CGFloat) -> some View {
         let shape = RoundedRectangle(cornerRadius: r, style: .continuous)
         if #available(macOS 26.0, *) {
+            // No manual shadow — it would be clipped by the panel window bounds and
+            // show up as sharp dark corners. Liquid Glass provides its own edge.
             self.glassEffect(.regular, in: shape)
-                .shadow(color: .black.opacity(0.18), radius: 18, y: 8)
+                .clipShape(shape)
         } else {
             self.background(shape.fill(.ultraThinMaterial))
                 .overlay(shape.strokeBorder(.white.opacity(0.12), lineWidth: 1))
                 .clipShape(shape)
-                .shadow(color: .black.opacity(0.22), radius: 18, y: 8)
         }
     }
 }
