@@ -137,12 +137,11 @@ private struct SwipeCard: View {
         .contentShape(Rectangle())
         .background(
             RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
-                .fill(hovering ? Color(nsColor: .controlBackgroundColor).opacity(0.9)
-                      : Color(nsColor: .controlBackgroundColor).opacity(0.75))
+                .fill(hovering ? Color.primary.opacity(0.12) : Color.primary.opacity(0.04))
         )
         .overlay(
             RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
-                .strokeBorder(hovering ? VST.Color.accent.opacity(0.5) : .white.opacity(0.06), lineWidth: 1)
+                .strokeBorder(hovering ? VST.Color.accent.opacity(0.5) : .white.opacity(0.05), lineWidth: 1)
         )
         .onHover { hovering = $0 }
         .help("Click to edit · swipe left to delete")
