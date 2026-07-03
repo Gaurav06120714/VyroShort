@@ -2,7 +2,8 @@
 //  StackPanel.swift
 //  VyroShort
 //
-//  Floating bottom-left panel showing recent screenshots as thumbnail cards.
+//  Compact floating widget: the 3 most recent screenshots.
+//  Click a card to edit · swipe left to delete.
 //
 
 import SwiftUI
@@ -12,31 +13,30 @@ struct StackPanel: View {
     var onOpen: (ScreenshotItem) -> Void
     var onClose: () -> Void
 
+    /// Only the most recent few are shown in the widget.
+    private var recent: [ScreenshotItem] { Array(stack.items.prefix(3)) }
+
     var body: some View {
         VStack(alignment: .leading, spacing: VST.Spacing.sm) {
             header
-            if stack.items.isEmpty {
+            if recent.isEmpty {
                 emptyState
             } else {
-                ScrollView {
-                    LazyVStack(spacing: VST.Spacing.sm) {
-                        ForEach(stack.filteredItems) { item in
-                            StackCard(
-                                item: item,
-                                thumbnail: stack.thumbnail(for: item),
-                                isSelected: stack.selection.contains(item.id),
-                                onOpen: { onOpen(item) },
-                                onFavorite: { stack.toggleFavorite(item) },
-                                onDelete: { stack.delete(item) }
-                            )
-                        }
+                VStack(spacing: VST.Spacing.sm) {
+                    ForEach(recent) { item in
+                        SwipeCard(
+                            item: item,
+                            thumbnail: stack.thumbnail(for: item),
+                            onOpen: { onOpen(item) },
+                            onDelete: { withAnimation(VST.Motion.quick) { stack.delete(item) } }
+                        )
                     }
-                    .padding(.horizontal, VST.Spacing.sm)
-                    .padding(.bottom, VST.Spacing.sm)
                 }
+                .padding(.horizontal, VST.Spacing.sm)
+                .padding(.bottom, VST.Spacing.sm)
             }
         }
-        .frame(width: 240, height: 360)
+        .frame(width: 260, height: 240, alignment: .top)
         .glassPanel()
     }
 
@@ -44,45 +44,70 @@ struct StackPanel: View {
         HStack(spacing: VST.Spacing.sm) {
             Image(systemName: "square.stack.3d.up.fill")
                 .foregroundStyle(VST.Color.accent)
-            Text("Stack")
+            Text("Recent")
                 .font(VST.Font.headline)
             Spacer()
-            ToolButton(systemImage: "xmark", label: "Hide stack") { onClose() }
+            Text("swipe to delete")
+                .font(VST.Font.caption)
+                .foregroundStyle(VST.Color.secondaryLabel)
+            ToolButton(systemImage: "xmark", label: "Hide") { onClose() }
         }
         .padding(.horizontal, VST.Spacing.md)
         .padding(.top, VST.Spacing.md)
+        .padding(.bottom, recent.isEmpty ? 0 : VST.Spacing.xs)
     }
 
     private var emptyState: some View {
         VStack(spacing: VST.Spacing.sm) {
-            Spacer()
             Image(systemName: "camera.viewfinder")
-                .font(.system(size: 30))
+                .font(.system(size: 26))
                 .foregroundStyle(VST.Color.secondaryLabel)
             Text("No screenshots yet")
                 .font(VST.Font.caption)
                 .foregroundStyle(VST.Color.secondaryLabel)
-            Text("⌘⇧4 to capture")
+            Text("⌘⇧Q to capture")
                 .font(VST.Font.caption)
                 .foregroundStyle(VST.Color.secondaryLabel.opacity(0.7))
-            Spacer()
         }
         .frame(maxWidth: .infinity)
+        .padding(.vertical, VST.Spacing.xl)
     }
-
 }
 
-private struct StackCard: View {
+/// A recent-screenshot card that opens on tap and deletes when swiped left.
+private struct SwipeCard: View {
     let item: ScreenshotItem
     let thumbnail: NSImage?
-    let isSelected: Bool
     var onOpen: () -> Void
-    var onFavorite: () -> Void
     var onDelete: () -> Void
 
+    @State private var offset: CGFloat = 0
     @State private var hovering = false
 
+    private let deleteThreshold: CGFloat = -80
+
     var body: some View {
+        ZStack(alignment: .trailing) {
+            // Red delete track revealed underneath as the card slides left.
+            RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
+                .fill(VST.Color.error.opacity(min(1, Double(-offset) / 80)))
+                .overlay(
+                    Image(systemName: "trash.fill")
+                        .foregroundStyle(.white)
+                        .padding(.trailing, VST.Spacing.lg)
+                        .opacity(min(1, Double(-offset) / 60)),
+                    alignment: .trailing
+                )
+
+            card
+                .offset(x: offset)
+                .gesture(swipe)
+                .onTapGesture { if offset == 0 { onOpen() } }
+        }
+        .frame(height: 52)
+    }
+
+    private var card: some View {
         HStack(spacing: VST.Spacing.sm) {
             thumb
             VStack(alignment: .leading, spacing: 2) {
@@ -99,29 +124,42 @@ private struct StackCard: View {
                     .font(.system(size: 10))
                     .foregroundStyle(VST.Color.warning)
             }
-            if hovering {
-                ToolButton(systemImage: "pencil", label: "Edit") { onOpen() }
-                ToolButton(systemImage: item.isFavorite ? "star.slash" : "star",
-                           label: "Favorite") { onFavorite() }
-                ToolButton(systemImage: "trash", label: "Delete", tint: VST.Color.error) { onDelete() }
+            if hovering && offset == 0 {
+                Image(systemName: "pencil")
+                    .font(.system(size: 11))
+                    .foregroundStyle(VST.Color.accent)
+                    .padding(.trailing, 2)
             }
         }
         .padding(VST.Spacing.sm)
+        .frame(height: 52)
         .contentShape(Rectangle())
         .background(
             RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
-                .fill(isSelected ? VST.Color.accentSoft
-                      : (hovering ? Color.primary.opacity(0.08) : Color.primary.opacity(0.03)))
+                .fill(hovering ? Color(nsColor: .controlBackgroundColor).opacity(0.9)
+                      : Color(nsColor: .controlBackgroundColor).opacity(0.75))
         )
         .overlay(
             RoundedRectangle(cornerRadius: VST.Radius.md, style: .continuous)
-                .strokeBorder(hovering ? VST.Color.accent.opacity(0.5) : .clear, lineWidth: 1)
+                .strokeBorder(hovering ? VST.Color.accent.opacity(0.5) : .white.opacity(0.06), lineWidth: 1)
         )
         .onHover { hovering = $0 }
-        // Single click opens the editor for fast, easy editing.
-        .onTapGesture { onOpen() }
-        .help("Click to edit")
-        .animation(VST.Motion.quick, value: hovering)
+        .help("Click to edit · swipe left to delete")
+    }
+
+    private var swipe: some Gesture {
+        DragGesture(minimumDistance: 6)
+            .onChanged { value in
+                offset = min(0, value.translation.width)   // left only
+            }
+            .onEnded { value in
+                if value.translation.width < deleteThreshold {
+                    withAnimation(VST.Motion.quick) { offset = -300 }
+                    onDelete()
+                } else {
+                    withAnimation(VST.Motion.quick) { offset = 0 }
+                }
+            }
     }
 
     private var thumb: some View {
