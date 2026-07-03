@@ -38,6 +38,8 @@ final class AppCoordinator: ObservableObject {
             window: { [weak self] in self?.captureWindow() },
             fullScreen: { [weak self] in self?.captureFullScreen() }
         )
+        // Prime ScreenCaptureKit so the first capture isn't cold/slow.
+        capture.warmUp()
     }
 
     func shutdown() {
@@ -52,15 +54,21 @@ final class AppCoordinator: ObservableObject {
     }
 
     /// Adds a freshly captured image to the stack, copies it, and opens the editor.
+    /// The editor opens immediately; persistence (PNG + thumbnail + SwiftData) runs
+    /// right after so the capture feels instant.
     func ingest(image: NSImage) {
         if settings.autoCopyOnCapture {
             ClipboardManager.copy(image: image)
         }
-        let item = stack.add(image: image)
+        let title = ScreenshotStack.defaultName()
+        openEditor(image: image, title: title)          // instant
         if settings.showStackPanel {
             stackPanel.show()
         }
-        openEditor(image: image, title: item?.name ?? "Screenshot")
+        // Defer disk write / thumbnail / DB insert until after the editor paints.
+        Task { @MainActor in
+            _ = self.stack.add(image: image, name: title)
+        }
     }
 
     func openEditor(for item: ScreenshotItem) {

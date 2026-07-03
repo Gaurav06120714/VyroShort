@@ -91,6 +91,12 @@ final class ScreenCaptureManager {
         return config
     }
 
+    /// Pre-loads shareable content so the first real capture doesn't pay the
+    /// cold-start cost of spinning up ScreenCaptureKit.
+    func warmUp() async {
+        _ = try? await shareableContent()
+    }
+
     private func shareableContent() async throws -> SCShareableContent {
         try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
     }

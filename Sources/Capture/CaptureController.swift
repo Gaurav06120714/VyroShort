@@ -17,6 +17,11 @@ final class CaptureController {
         self.onCapture = onCapture
     }
 
+    /// Warms up ScreenCaptureKit so the first capture isn't slow.
+    func warmUp() {
+        Task { await manager.warmUp() }
+    }
+
     func fullScreen() {
         Task { await run { try await self.manager.captureFullScreen() } }
     }

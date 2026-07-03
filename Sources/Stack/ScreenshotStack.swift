@@ -121,7 +121,7 @@ final class ScreenshotStack: ObservableObject {
         try? context.save()
     }
 
-    private static func defaultName() -> String {
+    static func defaultName() -> String {
         let fmt = DateFormatter()
         fmt.dateFormat = "MMM d 'at' h.mm.ss a"
         return "Screenshot \(fmt.string(from: .now))"
