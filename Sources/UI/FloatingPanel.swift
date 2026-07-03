@@ -27,6 +27,9 @@ final class FloatingPanel<Content: View>: NSPanel {
         // Must be false so drags (e.g. swipe-to-delete) reach the SwiftUI content
         // instead of moving the whole window.
         isMovableByWindowBackground = false
+        // Needed for SwiftUI hover + drag gestures to fire in a floating panel.
+        acceptsMouseMovedEvents = true
+        becomesKeyOnlyIfNeeded = false
         backgroundColor = .clear
         isOpaque = false
         hasShadow = false
