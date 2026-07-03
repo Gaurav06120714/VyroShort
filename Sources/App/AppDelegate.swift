@@ -19,8 +19,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // instance relaunches from there, so stop setting up the current one.
         if MoveToApplications.offerIfNeeded() { return }
 
+        enableLoginItemOnFirstRun()
         requestScreenRecordingIfNeeded()
         coordinator.start()
+    }
+
+    /// Register VyroShort to launch at login the first time it runs, so it comes
+    /// back automatically after a restart. The user can turn it off in Settings.
+    private func enableLoginItemOnFirstRun() {
+        let key = "didConfigureLoginItem"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+        LaunchAtLogin.set(true)
+        UserDefaults.standard.set(true, forKey: key)
     }
 
     /// Triggers the system Screen Recording prompt and registers VyroShort in the
