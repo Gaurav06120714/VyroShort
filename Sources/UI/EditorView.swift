@@ -56,6 +56,7 @@ struct EditorView: View {
             Button("") { engine.redo() }.keyboardShortcut("z", modifiers: [.command, .shift])
             Button("") { copyAndClose() }.keyboardShortcut("c", modifiers: .command)
             Button("") { engine.deleteSelected() }.keyboardShortcut(.delete, modifiers: [])
+            Button("") { onClose() }.keyboardShortcut(.cancelAction)   // ESC closes the editor
         }
         .opacity(0)
         .allowsHitTesting(false)
