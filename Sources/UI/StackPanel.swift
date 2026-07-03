@@ -124,9 +124,12 @@ private struct SwipeCard: View {
                     .font(.system(size: 10))
                     .foregroundStyle(VST.Color.warning)
             }
-            if hovering && offset == 0 {
+            // Always-visible actions so deletion never depends on a finicky swipe.
+            if offset == 0 {
                 ToolButton(systemImage: "pencil", label: "Edit") { onOpen() }
+                    .opacity(hovering ? 1 : 0.55)
                 ToolButton(systemImage: "trash", label: "Delete", tint: VST.Color.error) { onDelete() }
+                    .opacity(hovering ? 1 : 0.7)
             }
         }
         .padding(VST.Spacing.sm)
