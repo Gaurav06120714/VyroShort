@@ -23,7 +23,7 @@ final class StackPanelController {
 
     func show() {
         if panel == nil {
-            let panel = FloatingPanel(contentRect: NSRect(x: 0, y: 0, width: 240, height: 360)) {
+            let panel = FloatingPanel(contentRect: NSRect(x: 0, y: 0, width: 260, height: 240)) {
                 StackPanel(
                     stack: self.stack,
                     onOpen: { [weak self] in self?.onOpen($0) },
