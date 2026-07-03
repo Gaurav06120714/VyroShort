@@ -146,10 +146,12 @@ struct CanvasView: View {
                 }
             }
             .frame(width: displaySize.width, height: displaySize.height)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // Gestures MUST attach to the canvas-sized frame so cursor coordinates
+            // match the drawing — attaching after centering would offset them.
             .contentShape(Rectangle())
             .gesture(drawGesture(scale: scale, displaySize: displaySize))
             .onTapGesture { location in handleTap(location, scale: scale) }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
