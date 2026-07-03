@@ -26,8 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Triggers the system Screen Recording prompt and registers VyroShort in the
     /// Privacy list. If access was granted to a *previous* build, this re-prompts.
     private func requestScreenRecordingIfNeeded() {
-        if CGPreflightScreenCaptureAccess() { return }
-        // Shows the macOS prompt and adds the app to the Privacy list.
+        if ScreenRecordingPermission.isGranted { return }
         let granted = CGRequestScreenCaptureAccess()
         if !granted {
             DispatchQueue.main.async { self.showRelaunchHint() }

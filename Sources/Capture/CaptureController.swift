@@ -61,15 +61,15 @@ final class CaptureController {
     }
 
     private func presentPermissionHintIfNeeded(_ error: Error) {
+        // Only nag about permission when that's actually the cause.
+        guard !ScreenRecordingPermission.isGranted else { return }
         let alert = NSAlert()
-        alert.messageText = "Capture failed"
-        alert.informativeText = "VyroShort needs Screen Recording permission. Grant it in System Settings → Privacy & Security → Screen Recording, then relaunch."
+        alert.messageText = "Screen Recording permission needed"
+        alert.informativeText = "VyroShort needs Screen Recording to capture. Grant it in System Settings → Privacy & Security → Screen Recording, then relaunch VyroShort."
         alert.addButton(withTitle: "Open Settings")
         alert.addButton(withTitle: "Cancel")
         if alert.runModal() == .alertFirstButtonReturn {
-            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
-                NSWorkspace.shared.open(url)
-            }
+            ScreenRecordingPermission.openPrivacySettings()
         }
     }
 }

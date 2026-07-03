@@ -23,27 +23,70 @@ struct SettingsView: View {
         .preferredColorScheme(settings.appearanceMode.colorScheme)
     }
 
+    @State private var launchAtLogin = LaunchAtLogin.isEnabled
+
     private var generalTab: some View {
         Form {
             Toggle("Copy to clipboard on capture", isOn: $settings.autoCopyOnCapture)
             Toggle("Play capture sound", isOn: $settings.playCaptureSound)
             Toggle("Show screenshot stack", isOn: $settings.showStackPanel)
+            Toggle("Launch at login", isOn: Binding(
+                get: { launchAtLogin },
+                set: { launchAtLogin = $0; LaunchAtLogin.set($0) }
+            ))
+            LabeledContent("Version") {
+                Text(Self.appVersion).foregroundStyle(VST.Color.secondaryLabel)
+            }
         }
         .formStyle(.grouped).padding()
     }
 
+    static var appVersion: String {
+        let v = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+        let b = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+        return "\(v) (\(b))"
+    }
+
+    @State private var screenAccess = ScreenRecordingPermission.isGranted
+
     private var captureTab: some View {
         Form {
-            Picker("Capture delay", selection: $settings.captureDelaySeconds) {
-                Text("None").tag(0)
-                Text("3 seconds").tag(3)
-                Text("5 seconds").tag(5)
-                Text("10 seconds").tag(10)
+            Section("Permissions") {
+                LabeledContent("Screen Recording") {
+                    HStack(spacing: VST.Spacing.sm) {
+                        Circle()
+                            .fill(screenAccess ? VST.Color.success : VST.Color.error)
+                            .frame(width: 8, height: 8)
+                        Text(screenAccess ? "Granted" : "Not granted")
+                            .foregroundStyle(VST.Color.secondaryLabel)
+                    }
+                }
+                if !screenAccess {
+                    Text("VyroShort needs Screen Recording to capture. Grant it, then relaunch the app.")
+                        .font(VST.Font.caption)
+                        .foregroundStyle(VST.Color.secondaryLabel)
+                }
+                HStack {
+                    Button(screenAccess ? "Open Privacy Settings" : "Grant Access…") {
+                        ScreenRecordingPermission.request()
+                        screenAccess = ScreenRecordingPermission.isGranted
+                    }
+                    Button("Re-check") { screenAccess = ScreenRecordingPermission.isGranted }
+                }
             }
-            LabeledContent("Stack limit", value: "\(ScreenshotStack.maxItems) screenshots")
-            LabeledContent("Formats", value: "PNG · JPG · PDF · TIFF")
+            Section {
+                Picker("Capture delay", selection: $settings.captureDelaySeconds) {
+                    Text("None").tag(0)
+                    Text("3 seconds").tag(3)
+                    Text("5 seconds").tag(5)
+                    Text("10 seconds").tag(10)
+                }
+                LabeledContent("Stack limit", value: "\(ScreenshotStack.maxItems) screenshots")
+                LabeledContent("Formats", value: "PNG · JPG · PDF · TIFF")
+            }
         }
         .formStyle(.grouped).padding()
+        .onAppear { screenAccess = ScreenRecordingPermission.isGranted }
     }
 
     private var shortcutsTab: some View {

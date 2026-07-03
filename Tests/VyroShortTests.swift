@@ -53,6 +53,26 @@ final class VyroShortTests: XCTestCase {
     }
 
     @MainActor
+    func testEngineHitTestAndMove() {
+        let engine = AnnotationEngine(image: makeImage(CGSize(width: 200, height: 200)))
+        var a = engine.makeAnnotation(start: CGPoint(x: 50, y: 50))
+        a.end = CGPoint(x: 100, y: 100)
+        engine.beginAnnotation(a)
+        let id = a.id
+
+        // A point inside the shape hits it; a far point does not.
+        XCTAssertEqual(engine.hitTest(CGPoint(x: 75, y: 75)), id)
+        XCTAssertNil(engine.hitTest(CGPoint(x: 180, y: 10)))
+
+        // Moving updates the stored position and is undoable.
+        engine.beginInteractiveEdit()
+        engine.setPosition(id: id, start: CGPoint(x: 60, y: 60), end: CGPoint(x: 110, y: 110))
+        XCTAssertEqual(engine.annotation(id)?.start, CGPoint(x: 60, y: 60))
+        engine.undo()
+        XCTAssertEqual(engine.annotation(id)?.start, CGPoint(x: 50, y: 50))
+    }
+
+    @MainActor
     func testEngineAddText() {
         let engine = AnnotationEngine(image: makeImage())
         engine.addText(at: CGPoint(x: 5, y: 5), text: "Hello")

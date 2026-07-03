@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Publish DMG
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.app || true
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Build (Release)
+        run: |
+          xcodebuild -project VyroShort.xcodeproj -scheme VyroShort \
+            -configuration Release -destination 'platform=macOS' \
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+
+      - name: Package DMG
+        run: bash scripts/make_dmg.sh
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/VyroShort.dmg
+          generate_release_notes: true

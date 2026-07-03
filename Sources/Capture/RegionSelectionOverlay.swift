@@ -19,8 +19,8 @@ final class RegionSelectionOverlay {
         self.completion = completion
 
         let unionFrame = NSScreen.screens.reduce(CGRect.null) { $0.union($1.frame) }
-        let window = NSWindow(contentRect: unionFrame, styleMask: .borderless,
-                              backing: .buffered, defer: false)
+        let window = OverlayWindow(contentRect: unionFrame, styleMask: .borderless,
+                                   backing: .buffered, defer: false)
         window.level = .screenSaver
         window.backgroundColor = .clear
         window.isOpaque = false
@@ -47,6 +47,13 @@ final class RegionSelectionOverlay {
         completion = nil
         c?(rect)
     }
+}
+
+/// Borderless windows can't become key by default, which would swallow ESC and
+/// other key events. This subclass opts in so the overlay can be dismissed.
+private final class OverlayWindow: NSWindow {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
 }
 
 private final class SelectionView: NSView {
