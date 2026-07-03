@@ -51,8 +51,11 @@ final class RegionSelectionOverlay {
         view.onFinish = { [weak self] rect in self?.finish(rect) }
         view.onCancel = { [weak self] in self?.finish(nil) }
 
-        window.orderFrontRegardless()
-        window.makeKey()
+        // Activate so mouse/keyboard route to the overlay immediately (responsive),
+        // then show it. The reused window keeps this fast; the editor no longer
+        // toggles activation policy, so this won't flash the desktop.
+        NSApp.activate(ignoringOtherApps: true)
+        window.makeKeyAndOrderFront(nil)
         window.makeFirstResponder(view)
     }
 
