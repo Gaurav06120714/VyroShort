@@ -38,7 +38,8 @@ final class EditorWindowController {
         window.delegate = ProxyDelegate.shared
         ProxyDelegate.shared.register(window) { [weak self] in self?.dismiss() }
 
-        NSApp.setActivationPolicy(.regular)
+        // Stay an accessory app (no Dock/Space juggling that flashes the desktop);
+        // an accessory app can still show and focus a normal window.
         NSApp.activate(ignoringOtherApps: true)
         window.makeKeyAndOrderFront(nil)
         self.window = window
@@ -47,9 +48,6 @@ final class EditorWindowController {
     private func dismiss() {
         window = nil
         Self.open.removeAll { $0 === self }
-        if Self.open.isEmpty {
-            NSApp.setActivationPolicy(.accessory)
-        }
     }
 
     /// Bridges NSWindow close callbacks back to the owning controller.
