@@ -123,10 +123,16 @@ final class ScreenCaptureManager {
         // SCWindow.frame is in top-left global coordinates; convert AppKit point.
         let height = NSScreen.screens.map(\.frame.maxY).max() ?? 0
         let flipped = CGPoint(x: point.x, y: height - point.y)
-        return content.windows
-            .filter { $0.isOnScreen && $0.frame.contains(flipped) && ($0.title?.isEmpty == false || $0.owningApplication != nil) }
-            .sorted { $0.windowLayer < $1.windowLayer }
-            .first
+        let ownBundle = Bundle.main.bundleIdentifier
+        // content.windows is front-to-back, so the first match under the cursor is
+        // the topmost window. Accept ANY real window (no title requirement) except
+        // VyroShort's own overlay, and skip tiny/utility windows.
+        return content.windows.first { win in
+            win.isOnScreen
+            && win.frame.contains(flipped)
+            && win.frame.width > 40 && win.frame.height > 40
+            && win.owningApplication?.bundleIdentifier != ownBundle
+        }
     }
 }
 
